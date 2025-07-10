@@ -1,0 +1,34 @@
+{
+  "model_type": "keep",
+  "vision_config": {
+    "model_type": "vit",
+    "img_size": 224,
+    "patch_size": 16,
+    "hidden_size": 1024,
+    "num_heads": 16,
+    "num_layers": 24,
+    "mlp_ratio": 4.0,
+    "qkv_bias": true,
+    "drop_rate": 0.0,
+    "attn_drop_rate": 0.0,
+    "init_values": 1e-5,
+    "num_classes": 0,
+    "dynamic_img_size": true
+  },
+  "text_config": {
+    "model_type": "bert",
+    "vocab_size": 30522,
+    "hidden_size": 768,
+    "num_hidden_layers": 12,
+    "num_attention_heads": 12,
+    "intermediate_size": 3072,
+    "hidden_act": "gelu",
+    "hidden_dropout_prob": 0.1,
+    "attention_probs_dropout_prob": 0.1,
+    "max_position_embeddings": 512,
+    "type_vocab_size": 2,
+    "initializer_range": 0.02,
+    "layer_norm_eps": 1e-12
+  },
+  "projection_dim": 768
+}

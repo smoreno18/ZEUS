@@ -1,0 +1,19 @@
+Metadata-Version: 2.1
+Name: conch
+Version: 0.1.0
+Summary: CONCH: a vision language foundation model for human pathology.
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: CC BY-NC 4.0
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+Requires-Dist: torch>=2.0.1
+Requires-Dist: torchvision
+Requires-Dist: transformers==4.31.0
+Requires-Dist: tokenizers<0.14,>=0.12.1
+Requires-Dist: numpy
+Requires-Dist: scikit-learn
+Requires-Dist: timm==0.9.8
+Requires-Dist: regex
+Requires-Dist: ftfy
+Requires-Dist: h5py
+Requires-Dist: pandas
