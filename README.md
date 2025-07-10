@@ -2,7 +2,7 @@
 ===========
 
 ## What is ZEUS? 
-  ZEUS is a fully automated, zero-shot segmentation pipeline for whole-slide histopathology images that leverages vision–language foundation models. It consists of:<br/> <img src="zeus_logo.png" width="240px" align="right" />
+  ZEUS is a fully automated, zero-shot segmentation pipeline for whole-slide histopathology images that leverages vision–language foundation models (VLMs). Currently, the framework includes support for three VLMs: [**CONCH**](https://github.com/mahmoodlab/CONCH/tree/main), [**KEEP**](https://github.com/MAGIC-AI4Med/KEEP/tree/main), and [**MUSK**](https://github.com/lilab-stanford/MUSK/tree/main). It consists of:<br/> <img src="zeus_logo.png" width="240px" align="right" />
   <ol>
     <li><strong>Tissue Detection &amp; Patching:</strong> Identify tissue regions on the WSI and split them into patches by implementing <a href="https://github.com/mahmoodlab/CLAM">CLAM</a> framework.</li>
     <li><strong>Prompt Ensembles</strong>: Craft rich textual descriptions for each class (e.g. tumor vs. healthy) without any manual annotations.</li>
@@ -29,16 +29,26 @@ pip install -r requirements-txt
 ```
 
 ## 🚀 **Lauching ZEUS**:
-  <ol>
-    <li><strong>First, place your WSIs inside `data/images`. If you have annotations, put them in `data/masks`.</li>
-    <li><strong>Then, you need to create your data-specific prompt template, which defines the textual descriptions for each class (e.g., tumor, normal tissue). You can find an example template for skin cancer detection [here](inference/local_data/prompts/Templates/example_template)</li>
-    <li><strong>Once your prompt template is ready and your data is placed in the data root, you can execute the full pipeline with the following command:</li>
-  </ol>
+
+<ol>
+  <li>
+    <strong>First, download the model weights following the instructions from their respective repositories and place them inside <code>models/checkpoints</code>.</strong>
+  </li>
+  <li>
+    <strong>Then, place your WSIs inside <code>data/images</code>.</strong> If you have annotations, put them in <code>data/masks</code>.
+  </li>
+  <li>
+    <strong>Create your data-specific prompt template, which defines the textual descriptions for each class (e.g., tumor, normal tissue).</strong> You can find an example template for skin cancer detection <a href="inference/local_data/prompts/Templates/example_template.json">here</a>.
+  </li>
+  <li>
+    <strong>Once your prompt template is ready and your data is set up, you can execute the full pipeline using the following command:</strong>
+  </li>
+</ol>
+
       
 ```
 python main.py --task all --wsi_dir ./wsis --job_dir ./trident_processed --patch_encoder uni_v1 --mag 20 --patch_size 256
 ```
-
 
 ### **Or if you are already familiar with WSI processing you can perform the pipeline steps individually:**
 
