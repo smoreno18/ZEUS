@@ -1,0 +1,16 @@
+# Python compiled files
+__pycache__/
+*.pyc
+*.pyo
+
+# Virtual environment
+venv/
+.venv/
+env/
+
+# IDE specific files
+.idea/          # For IntelliJ/PyCharm
+.vscode/        # For VS Code
+*.swp           # For Vim
+*~              # Temporary files
+.DS_Store       # macOS files
