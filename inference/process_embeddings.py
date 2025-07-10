@@ -95,13 +95,13 @@ if __name__ == "__main__":
     processor.similarities(ensemble, save=True)
 
     emb_dir = os.path.join(args.source, "embeddings", args.model)
-    emb_files = [f[:-4] for f in os.listdir(emb_dir) if f.endswith(".npy") and f.split('_')[1][0] =='0']
+    emb_files = [f[:-4] for f in os.listdir(emb_dir) if f.endswith(".npy")]
 
     if args.pred:
-        base_out = os.path.join(args.source, "masks_pred", args.template_name, args.model)
+        base_out = os.path.join(args.source, "pred_masks", args.template_name, args.model)
         save_normal = os.path.join(base_out, "normal")
         save_tumor  = os.path.join(base_out, "tumor")
-        save_binary = os.path.join(base_out, "binary")
+        save_binary = os.path.join(base_out, "prediction")
 
         for slide in tqdm(sorted(emb_files), desc="[INFO] Procesando slides", unit="slide"):
             out_n = os.path.join(save_normal, slide + "_normal_mask.png")
@@ -111,7 +111,7 @@ if __name__ == "__main__":
             # if os.path.exists(out_b):
             #     print(f"Ya existe la mascara para: {slide}")
                     
-            wsi_path = os.path.join(f"/BBDD/data/images", slide + ".jpg")
+            wsi_path = os.path.join(f"data/images", slide + ".jpg")
             t_path = os.path.join(f"{args.source}/tissue", slide + ".png")
                         
             try:
@@ -131,7 +131,7 @@ if __name__ == "__main__":
                     tissue = None
 
                 coords = np.load(os.path.join(args.source, "coords", slide + ".npy"))
-                scores = np.load(os.path.join(args.source, "scores", args.template_name, args.model, slide + ".npy"))
+                scores = np.load(os.path.join(args.source, "similarities", args.template_name, args.model, slide + ".npy"))
                 scores_n = scores[:, 0]
                 scores_t = scores[:, 1]
 
@@ -141,7 +141,7 @@ if __name__ == "__main__":
                                                       out_normal=out_n,
                                                       out_tumor=out_t,
                                                       out_binary=out_b,
-                                                      resize_factor=1/8)
+                                                      resize_factor=1)
 
                 del binary_pred, coords, scores, scores_n, scores_t
                 gc.collect()

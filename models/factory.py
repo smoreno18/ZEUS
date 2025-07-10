@@ -3,11 +3,12 @@ import torch
 from utils.utils import device
 
 
-
 # Factory of histopathology foundation models
 
+
+
 def load_model(model_name:str, checkpoint_path = None):
-    checkpoint_path = f"/workspace/Projects/CPathPipeline/feature_extraction/checkpoints/{model_name}.bin"
+    checkpoint_path = f"models/checkpoints/{model_name}.bin"
 
     # CONCH: https://github.com/mahmoodlab/CONCH
     if model_name == "CONCH":
@@ -23,7 +24,7 @@ def load_model(model_name:str, checkpoint_path = None):
         model.to(device)
         model.eval()
         
-        # MUSK: https://github.com/MAGIC-AI4Med/KEEP
+        # MUSK: https://github.com/lilab-stanford/MUSK
     elif model_name == "MUSK":
         from huggingface_hub import login
         from models.ELON.musk.modeling import return_MUSK
@@ -32,18 +33,18 @@ def load_model(model_name:str, checkpoint_path = None):
         model.to(device= device, dtype=torch.float16)
         model.eval()
 
-    # UNI: https://github.com/mahmoodlab/UNI
-    elif model_name == "UNI2":
-        from models.UNI import get_encoder
-        model, transform = get_encoder(enc_name='uni2-h', device="cuda:0", assets_dir=checkpoint_path)
-        model.to(device)
-        model.eval()
+    # # UNI: https://github.com/mahmoodlab/UNI
+    # elif model_name == "UNI2":
+    #     from models.UNI import get_encoder
+    #     model, transform = get_encoder(enc_name='uni2-h', device="cuda:0", assets_dir=checkpoint_path)
+    #     model.to(device)
+    #     model.eval()
 
-    # PLIP: https://github.com/PathologyFoundation/plip
-    elif model_name == "PLIP":
-        from models.PLIP import PLIP
-        model = PLIP('vinid/plip')
-        transform = None
+    # # PLIP: https://github.com/PathologyFoundation/plip
+    # elif model_name == "PLIP":
+    #     from models.PLIP import PLIP
+    #     model = PLIP('vinid/plip')
+    #     transform = None
 
     else:
         print("[ERROR: Unknown model name]")

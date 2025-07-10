@@ -31,7 +31,7 @@ class Processor:
         self.model_name = model_name
         self.project_name = template_name
         self.folder_coords = f"{project_folder}/coords"
-        self.folder_scores = f"{project_folder}/scores_new/{self.project_name}/{self.model_name}"
+        self.folder_scores = f"{project_folder}/similarities/{self.project_name}/{self.model_name}"
         self.folder_emb = f"{project_folder}/embeddings/{self.model_name}"
         
         # Ensure all required output folders exist
@@ -42,7 +42,7 @@ class Processor:
         # self.device = 'cpu'
         if self.model_name == "CONCH":
             # Load the pretrained model with its configuration
-            checkpoint_path = 'models/CONCH/model_CONCH.bin'
+            checkpoint_path = 'models/checkpoints/CONCH.bin'
             model_cfg = 'conch_ViT-B-16'
             self.model_CONCH, _ = create_model_from_pretrained(model_cfg=model_cfg, checkpoint_path=checkpoint_path, device=self.device)
             self.model_CONCH.eval()

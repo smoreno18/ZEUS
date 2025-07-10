@@ -91,7 +91,7 @@ class WholeSlideImage(object):
         save_pkl(mask_file, asset_dict)
 
     def segmentTissue(self, seg_level=0, sthresh=20, sthresh_up = 255, mthresh=7, close = 0, use_otsu=False, 
-                            filter_params={'a_t':100}, ref_patch_size=512, exclude_ids=[], keep_ids=[]):
+                            filter_params={'a_t':100}, ref_patch_size=512, exclude_ids=[], keep_ids=[], save_dir=''):
         """
             Segment the tissue via HSV -> Median thresholding -> Binary threshold
         """
@@ -160,7 +160,8 @@ class WholeSlideImage(object):
             kernel = np.ones((close, close), np.uint8)
             img_otsu = cv2.morphologyEx(img_otsu, cv2.MORPH_CLOSE, kernel)                 
 
-        cv2.imwrite(os.path.join('/workspace/Projects/TCGA_SKCM/50_PERCENT_Otsu/tissue', f'{self.name}.png'), img_otsu)
+        cv2.imwrite(os.path.join(save_dir, 'tissue', f'{self.name}.png'), img_otsu)
+        
         scale = self.level_downsamples[seg_level]
         scaled_ref_patch_area = int(ref_patch_size**2 / (scale[0] * scale[1]))
         filter_params = filter_params.copy()

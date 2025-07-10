@@ -9,7 +9,7 @@ import torch
 from PIL import Image
 from tqdm import tqdm
 
-from feature_extraction.models.CONCH.open_clip_custom import create_model_from_pretrained
+from models.CONCH.open_clip_custom import create_model_from_pretrained
 
 warnings.filterwarnings("ignore")
 

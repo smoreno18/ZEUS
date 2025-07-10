@@ -24,12 +24,12 @@ def stitching(file_path, downscale = 64):
 	
 	return heatmap, total_time
 
-def segment(WSI_object, seg_params, filter_params):
+def segment(WSI_object, seg_params, filter_params, save_dir):
 	### Start Seg Timer
 	start_time = time.time()
 
 	# Segment
-	WSI_object.segmentTissue(**seg_params, filter_params=filter_params)
+	WSI_object.segmentTissue(**seg_params, filter_params=filter_params, save_dir = save_dir)
 	
 	### Stop Seg Timers
 	seg_time_elapsed = time.time() - start_time   
@@ -54,22 +54,13 @@ def seg_and_patch(source, save_dir, mask_save_dir, stitch_save_dir, emb_save_dir
 				  vis_params = {'vis_level': -1, 'line_thickness': 250},
 				  patch_params = {'white_thresh': 5, 'black_thresh': 40, 'use_padding': True, 'contour_fn': 'four_pt'},
 				  patch_level = 0, use_default_params = False, seg = False, save_mask = True,
-				  stitch= False, patch = False, auto_skip=True, process_list = None, format = "tif"):
+				  stitch= False, patch = False, auto_skip=True, process_list = None, format = "jpg"):
 
 
-	# with open('/workspace/message.txt', 'r') as f:
-	# 	datos = [f"{line.strip()}.tif"  for line in f]
- 
-	# with open('/workspace/Projects/ASSIST/ASSIST_slides.txt', 'r') as f:
-	# 	datos = [line.strip()+".tif" for line in f]
-  
-	# breakpoint()
- 
 	# Read list of slides
 	slides, slides_fp = [], []
 	for root, dirs, files in os.walk(source):
 		for file in sorted(files):
-			# if fnmatch.fnmatch(file, f"*.{format}") and file in datos:
 			if fnmatch.fnmatch(file, f"*.{format}"):
 				slides.append(os.path.basename(file))
 				slides_fp.append(os.path.join(root, file))
@@ -77,7 +68,6 @@ def seg_and_patch(source, save_dir, mask_save_dir, stitch_save_dir, emb_save_dir
 	print(f"DEBUG: Found {len(slides)} slides BEFORE initialize_df.")
 	if len(slides) > 0:
 		print(f"DEBUG: First 5 slides BEFORE initialize_df: {slides[:5]}")
-		print(f"DEBUG: First 5 slide file paths BEFORE initialize_df: {slides_fp[:5]}")
 	else:
 		print("DEBUG: No slides found matching the format in the source directory BEFORE initialize_df.")
 	# breakpoint()
@@ -189,7 +179,7 @@ def seg_and_patch(source, save_dir, mask_save_dir, stitch_save_dir, emb_save_dir
 
 		seg_time_elapsed = -1
 		if seg:
-			WSI_object, seg_time_elapsed = segment(WSI_object, current_seg_params, current_filter_params) 
+			WSI_object, seg_time_elapsed = segment(WSI_object, current_seg_params, current_filter_params, save_dir) 
 
 		# if save_mask:
 		# 	mask = WSI_object.visWSI(**current_vis_params)
@@ -266,6 +256,7 @@ parser.add_argument('--models',  type = str, default="KEEP,CONCH",
 if __name__ == '__main__':
 	args = parser.parse_args()
 
+	source = os.path.join(args.source, "images")
 	emb_save_dir = os.path.join(args.save_dir, 'embeddings')
 	coords_save_dir = os.path.join(args.save_dir, 'coords')
 	mask_save_dir = os.path.join(args.save_dir, 'masks')
@@ -303,10 +294,7 @@ if __name__ == '__main__':
 	seg_params = {'seg_level': -1, 'sthresh': 8, 'mthresh': 7, 'close': 12, 'use_otsu': True,
 				  'keep_ids': 'none', 'exclude_ids': 'none'}
 	filter_params = {'a_t':2, 'a_h': 16, 'max_n_holes':8}
-	# seg_params = {'seg_level': 2, 'sthresh': 8, 'mthresh': 7, 'close': 4, 'use_otsu': True,
-	# 			'keep_ids': 'none', 'exclude_ids': 'none'}
-	# filter_params = {'a_t': 500, 'a_h': 16, 'max_n_holes': 4}
-	vis_params = {'vis_level': 1, 'line_thickness': 100}
+	vis_params = {'vis_level': -1, 'line_thickness': 100}
 	patch_params = {'white_thresh': 5, 'black_thresh': 40, 'use_padding': True, 'contour_fn': 'four_pt'}
 
 	if args.preset:
