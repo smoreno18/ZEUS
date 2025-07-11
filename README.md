@@ -29,7 +29,6 @@ pip install -r requirements-txt
 ```
 
 ## 🚀 **Lauching ZEUS**:
-
 <ol>
   <li>
     <strong>First, download the model weights following the instructions from their respective repositories and place them inside <code>models/checkpoints</code>.</strong>
@@ -49,6 +48,13 @@ pip install -r requirements-txt
 ```
 python main.py --task all --wsi_dir ./wsis --job_dir ./trident_processed --patch_encoder uni_v1 --mag 20 --patch_size 256
 ```
+- `--data`: Path to the directory containing your data.
+- `--save/dir ./output`: Output directory where all processed results, tissue masks, coordinates, and embeddings will be saved.
+- `--template_name`: Activates patching mode to tile the WSIs into smaller fixed-size patches.
+- `--models model1,model2`: Comma-separated list of vision–language models to use for embedding extraction (e.g., CONCH, KEEP, MUSK).
+
+> [!NOTE]
+> By default, this command uses a patch size of 448×448 pixels with a 75% overlap. You can customize these patching settings directly in [main.py](main.py) if needed for your specific application.
 
 ### **Or if you are already familiar with WSI processing you can perform the pipeline steps individually:**
 
