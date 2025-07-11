@@ -56,6 +56,8 @@ python main.py --task all --wsi_dir ./wsis --job_dir ./trident_processed --patch
 > [!NOTE]
 > By default, this command uses a patch size of 448×448 pixels with a 75% overlap. You can customize these patching settings directly in [main.py](main.py) if needed for your specific application.
 
+
+
 ### **Or if you are already familiar with WSI processing you can perform the pipeline steps individually:**
 
 **Step 1: Tissue Detection &amp; Patching:** Segments tissue vs. background from a dir of WSIs and split the tissue regions into patches
