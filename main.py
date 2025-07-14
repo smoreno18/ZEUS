@@ -35,16 +35,16 @@ if __name__ == "__main__":
         # Puedes descomentar estos pasos si quieres
         print("Step 3: Computing segmentation metrics...\n")
         subprocess.run([
-            "python", "evaluation/calc_metrics.py",
+            "python", "/workspace/Projects/ZEUS/evaluation/eval_segmentation.py",
             "--source", args.data,
             "--exp", args.save_dir,
             "--template_name", args.template_name,
             "--model", model
         ], check=True)
 
-    # print("Step 4: Ejecutando overlay_prediction_v5.py...\n")
+    # print("Step 4: Ejecutando overlay_prediction_v3.py...\n")
     # subprocess.run([
-    #     "python", "overlay_prediction_v5.py",
+    #     "python", "/workspace/Projects/scripts/overlay_prediction_v3.py",
     #     "--exp", args.save_dir,
     #     "--wsi_path", args.data,
     #     "--gt",
@@ -52,4 +52,4 @@ if __name__ == "__main__":
     #     "--models", args.models
     # ], check=True)
 
-    print("✅ Pipeline completed.")
+    # print("✅ Pipeline completed.")

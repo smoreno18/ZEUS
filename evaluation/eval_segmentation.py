@@ -51,27 +51,23 @@ if __name__ == "__main__":
     parser.add_argument('--model', type=str, required=True, help='Modelo a usar')
     args = parser.parse_args()
 
-    metrics_dir = os.path.join(args.exp, "metrics", args.template_name)
+    metrics_dir = os.path.join(args.exp, "metrics_resized", args.template_name)
     os.makedirs(metrics_dir, exist_ok=True)
 
-    base_out = os.path.join(args.exp, "masks_pred", args.template_name, args.model)
-    save_binary = os.path.join(base_out, "binary")
+    base_out = os.path.join(args.exp, "pred_masks_resized", args.template_name, args.model)
+    save_binary = os.path.join(base_out, "prediction")
 
 
-    # slides = os.listdir(os.path.join(args.source, "regions"))
-    slides = os.listdir(os.path.join(args.source, "images"))
-
+    # slides = os.listdir(os.path.join(args.source, "images"))
+    slides = os.listdir(os.path.join(args.source, "regions"))
     metrics_dict = {}
-    missing_slides = []
 
     for wsi in tqdm(slides, desc="[INFO] Calculando métricas desde binarized_pred", unit="slide"):
         slide = os.path.splitext(wsi)[0]
-        # breakpoint()
         out_b = os.path.join(save_binary, slide + "_binary_mask.png")
-        # breakpoint()
+
         if not os.path.exists(out_b):
             print(f"[WARNING] Máscara binaria no encontrada para {slide}")
-            missing_slides.append(slide)
             continue
 
         # Cargar predicción binaria
@@ -80,7 +76,8 @@ if __name__ == "__main__":
         binary_pred = (binary_pred > 0).astype(int)
 
         # Cargar máscara de tejido
-        tissue_path = os.path.join(args.exp, "tissue", slide + ".png")
+        # tissue_path = os.path.join(args.exp, "tissue", slide + ".png")
+        tissue_path = os.path.join(args.source, "tissue", slide + ".png")
         if not os.path.exists(tissue_path):
             print(f"[WARNING] Tissue mask not found for {slide}")
             continue

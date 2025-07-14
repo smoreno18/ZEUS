@@ -40,15 +40,21 @@ def zero_shot_classifier(model, model_name, classnames, templates, tokenizer=Non
                 embeddings_for_class.append(F.normalize(classname_embeddings, dim=-1)) 
                 
             elif model_name == 'MUSK':
-                txt_ids, pad = utils.xlm_tokenizer(texts, tokenizer, max_len=100)
+                text_ids = []
+                paddings = []
+                for txt in texts:
+                    txt_ids, pad = utils.xlm_tokenizer(txt, tokenizer, max_len=100)
+                    text_ids.append(torch.tensor(txt_ids).unsqueeze(0))
+                    paddings.append(torch.tensor(pad).unsqueeze(0))
+
+                text_ids = torch.cat(text_ids)
+                paddings = torch.cat(paddings)
                 with torch.inference_mode():
                     classname_embeddings = model(
-                        text_description=txt_ids,
-                        padding_mask=pad,
-                        with_head=True, 
-                        out_norm=True,
-                        ms_aug=True,
-                        return_global=True 
+                        text_description=text_ids.to(device),
+                        padding_mask=paddings.to(device),
+                        with_head=True, # We utilize this head for zero-shot tasks (image-text retrieval and zero-shot image classification).
+                        out_norm=True   # Ensure that the embedding is normalized.
                     )[1]
                 embeddings_for_class.append(classname_embeddings) # MUSK update
                 

@@ -1,0 +1,46 @@
+{
+    "0": {
+        "classnames": {
+            "normal": [
+                "non-cancerous cutaneous tissue",
+                "normal cutaneous spindle cells",
+                "normal",
+                "normal skin cells",
+                "normal tissue",
+                "normal structures",
+                "normal growth"
+            ],
+            "tumor": [
+                "tumor",
+                "benign tumor",
+                "tumoral tissue",
+                "skin cancer",
+                "leiomyoma",
+                "cutaneous leiomyoma",
+                "cutaneous spindle cell neoplasm",
+                "neoplasm",
+                "tumoral skin cells",
+                "tumoral spindle cells",
+                "neoplastic tissue",
+                "tumor growth"
+            ]
+        },
+        "templates": [
+            "An example of CLASSNAME.",
+            "A histopathological image of CLASSNAME.",
+            "A histopathological photograph of CLASSNAME.",
+            "This is CLASSNAME.",
+            "There is CLASSNAME.",
+            "CLASSNAME is shown.",
+            "An H&E stained image of CLASSNAME.",
+            "CLASSNAME under a microscope.",
+            "CLASSNAME at 40x magnification.",
+            "CLASSNAME observed in a biopsy.",
+            "CLASSNAME from a routine pathological check.",
+            "A detailed view of CLASSNAME.",
+            "Microscopic examination of CLASSNAME.",
+            "CLASSNAME in a clinical specimen.",
+            "CLASSNAME in a diagnostic slide."
+        ]
+    }
+}
