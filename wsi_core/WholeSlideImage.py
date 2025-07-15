@@ -154,13 +154,12 @@ class WholeSlideImage(object):
             _, img_otsu = cv2.threshold(img_med, 0, sthresh_up, cv2.THRESH_OTSU+cv2.THRESH_BINARY)
         else:
             _, img_otsu = cv2.threshold(img_med, sthresh, sthresh_up, cv2.THRESH_BINARY)
-
+        
         # Morphological closing
         if close > 0:
             kernel = np.ones((close, close), np.uint8)
             img_otsu = cv2.morphologyEx(img_otsu, cv2.MORPH_CLOSE, kernel)                 
 
-        cv2.imwrite(os.path.join(save_dir, 'tissue', f'{self.name}.png'), img_otsu)
         
         scale = self.level_downsamples[seg_level]
         scaled_ref_patch_area = int(ref_patch_size**2 / (scale[0] * scale[1]))
@@ -184,6 +183,20 @@ class WholeSlideImage(object):
 
         self.contours_tissue = [self.contours_tissue[i] for i in contour_ids]
         self.holes_tissue = [self.holes_tissue[i] for i in contour_ids]
+        
+                # Draw the final filtered tissue mask after applying contour filtering
+        final_mask = np.zeros(img_otsu.shape, dtype=np.uint8)
+
+        # Draw filled contours
+        cv2.drawContours(final_mask, self.contours_tissue, -1, color=255, thickness=cv2.FILLED)
+
+        # Subtract holes if present
+        for hole_set in self.holes_tissue:
+            cv2.drawContours(final_mask, hole_set, -1, color=0, thickness=cv2.FILLED)
+
+        # Save final filtered mask
+        cv2.imwrite(os.path.join(save_dir, 'tissue', f'{self.name}.png'), final_mask)
+        
         
 
     def visWSI(self, vis_level=0, color = (0,255,0), hole_color = (0,0,255), annot_color=(255,0,0), 

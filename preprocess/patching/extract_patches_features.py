@@ -261,6 +261,7 @@ if __name__ == '__main__':
 	coords_save_dir = os.path.join(args.save_dir, 'coords')
 	mask_save_dir = os.path.join(args.save_dir, 'masks')
 	stitch_save_dir = os.path.join(args.save_dir, 'stitches')
+	os.makedirs(os.path.join(args.save_dir, 'tissue'), exist_ok=True)
 
 	if args.process_list:
 		process_list = os.path.join(args.save_dir, args.process_list)
