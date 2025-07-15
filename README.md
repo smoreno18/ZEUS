@@ -29,7 +29,6 @@ pip install -r requirements-txt
 ```
 
 ## 🚀 **Lauching ZEUS**:
-
 <ol>
   <li>
     <strong>First, download the model weights following the instructions from their respective repositories and place them inside <code>models/checkpoints</code>.</strong>
@@ -47,8 +46,17 @@ pip install -r requirements-txt
 
       
 ```
-python main.py --task all --wsi_dir ./wsis --job_dir ./trident_processed --patch_encoder uni_v1 --mag 20 --patch_size 256
+python main.py --data ./data --save_dir ./output --template_name template1 --models model1,model2
 ```
+- `--data`: Path to the directory containing your data.
+- `--save/dir ./output`: Output directory where all processed results, tissue masks, coordinates, and embeddings will be saved.
+- `--template_name`: Activates patching mode to tile the WSIs into smaller fixed-size patches.
+- `--models model1,model2`: Comma-separated list of vision–language models to use for embedding extraction (e.g., CONCH, KEEP, MUSK).
+
+> [!NOTE]
+> By default, this command uses a patch size of 448×448 pixels with a 75% overlap. You can customize these patching settings directly in [main.py](main.py) if needed for your specific application.
+
+
 
 ### **Or if you are already familiar with WSI processing you can perform the pipeline steps individually:**
 
@@ -74,33 +82,43 @@ python main.py --task all --wsi_dir ./wsis --job_dir ./trident_processed --patch
    ```bash
    python process_embeddings.py --exp ./output --pred --tissue --template_name template1 --model model1
    ```
+   - `--data`: Path to directory containing WSIs.
    - `--exp ./output`: Path to the directory containing previously saved patch features and metadata (e.g., the --save_dir from Step 1).
    - `--pred`: Enables prediction mode to generate segmentation maps.
+   - `--tissue`: Applies tissue mask during segmentation.Saves soft similarity maps for both classes as PNGs.
+   - `--sim_maps`: Saves soft similarity maps for both classes as PNGs.
    - `--template_name template1`: Name of the textual prompt template (e.g., template1) to define the class descriptions for zero-shot inference.
-   - `--patch_size 256`: Each patch is 256x256 pixels.
    - `--model model1`: Vision–language model used for inference; options include CONCH, KEEP, or MUSK.
  - **Outputs**:
-   - `output/pred_masks/`: Binary or probability masks for each WSI, showing predicted tumor regions.
-   - `output/similarity_maps/`: Per-class similarity maps (raw scores) saved as .npy or .png for further inspection or thresholding.
+   - `output/similarities/template1/model1`: Numpy files containing per WSI cosine similatiry scores for each patch.
+   - `output/pred_masks/template1/model1`: Binary or probability masks for each WSI, showing predicted tumor regions.
+   - `output/similarity_maps/template1/model1`: Per-class similarity maps (raw scores) saved as .npy or .png for further inspection or thresholding.
 
  **Step 3: Inference:** Generates prediction and ground truth (if available) overlays.
  - **Command**:
    ```bash
-   python process_embeddings.py --source ./output --pred --tissue --template_name template1 --model model1
+   python process_embeddings.py --data ./data --exp ./output --pred --tissue --template_name template1 --model model1
    ```
-   - `--exp`: Path to the experiment output folder containing model predictions, tissue masks, etc.
    - `--data`: Root directory of your dataset, including WSI images and ground truth masks.
+   - `--exp`: Path to the experiment output folder containing model predictions, tissue masks, etc.
    - `--template_name`: Name of the textual prompt template used (e.g., example_template), used to locate model prediction folders.
-   - `--gt`: If passed, also includes the overlay with the ground truth mask (if available).
    - `--models`: Comma-separated list of models to overlay (e.g., CONCH,KEEP).
+   - `--resize_factor`(optional): Downsampling factor to control overlay size (default is 1).
  - **Output**:
-   - `output/`: Overlay images showing one or more model predictions (and optionally GT) aligned on the original WSI region.
+   - `output/overlay_prediction`: Side-by-side visualization of GT vs model predictions with legend.
    
 
 ## 📊 **Evaluating Segmentation results**:
 
 **To calculate the Dice Similarity Coefficient (DSC), as well as precision and recall, run**:
 ```
-python process_embeddings.py --source ./output --pred --tissue --template_name template1 --model model1
+python eval_segmentation.py --data ./data --exp ./output --pred --tissue --template_name template1 --model model1
 ```
+   - `--data`: Folder containing WSI images/ and GT masks/.
+   - `--exp`: Path to the experiment output folder containing model predictions, tissue masks, etc.
+   - `--template_name`: Name of the textual prompt template used (e.g., example_template), used to locate model prediction folders.
+   - `--models`: Comma-separated list of models to overlay (e.g., CONCH,KEEP).
+   - `--resize_factor`(optional): Downsampling factor to control overlay size (default is 1).
+ - **Output**:
+   - `output/overlay_prediction`: Side-by-side visualization of GT vs model predictions with legend.
 
