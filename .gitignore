@@ -3,6 +3,8 @@ __pycache__/
 *.pyc
 *.pyo
 *.bin
+*process_embeddings_copy.py
+*eval_segmentation_copy.py
 
 # Virtual environment
 venv/

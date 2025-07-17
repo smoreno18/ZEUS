@@ -3,6 +3,7 @@ import os
 import numpy as np
 import torch
 from tqdm import tqdm
+from models.ELON.musk import modeling
 from zeroshot_path import zero_shot_classifier
 from models.CONCH.open_clip_custom import create_model_from_pretrained
 from transformers import AutoModel, AutoTokenizer, XLMRobertaTokenizer
@@ -59,6 +60,7 @@ class Processor:
             from timm.models import create_model
             from huggingface_hub import login
             # login(<place_your_login_token>)
+            login("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")
             self.model_MUSK = create_model("musk_large_patch16_384")
             utils.load_model_and_may_interpolate("hf_hub:xiangjx/musk", self.model_MUSK, 'model|module', '')
             self.tokenizer = XLMRobertaTokenizer("models/ELON/musk/models/tokenizer.spm")
@@ -70,7 +72,6 @@ class Processor:
         Loads the pretrained CONCH model and prepares zero-shot classifier prompts.
         Saves the computed embeddings for reuse.
         """
-
         print("[INFO] Prompt ensembling")
         # Load prompts for zero-shot classification
         prompt_file = os.path.join('inference/local_data/prompts/Templates', self.project_name + '.json')
@@ -107,6 +108,9 @@ class Processor:
         Processes patch embeddings to compute similarity scores with the zero-shot weights.
         Saves the similarity scores for each WSI.
         """
+        if len(os.listdir(self.folder_scores)) != 0:
+            return print("[INFO] Similarities already computed. Skipping...")
+        
         def conch_visual_head(patch_embd, model):
             """
             Projects and normalizes patch embeddings using the model's visual head.

@@ -6,7 +6,15 @@ import argparse
 import numpy as np
 from PIL import Image
 from tqdm import tqdm
-import openslide
+
+# The path can also be read from a config file, etc.
+OPENSLIDE_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + "\\wsi_core"
+if hasattr(os, 'add_dll_directory'):
+    # Windows
+    with os.add_dll_directory(OPENSLIDE_PATH):
+        import openslide
+else:
+    import openslide
 
 # Allow very large images to be processed
 Image.MAX_IMAGE_PIXELS = None
@@ -82,7 +90,7 @@ def generate_and_save_masks(coords, scores_normal, scores_tumor, tissue,
     pred = np.argmax(np.stack([mask_n, mask_t]), axis=0).astype(np.uint8) * 255
 
     # Smooth binary mask
-    patch_size_small = max(int(2 * patch_size * resize_factor + 1), 3)
+    patch_size_small = max(int(2 * patch_size + 1), 3)
     if patch_size_small % 2 == 0:
         patch_size_small += 1
     pred = cv2.GaussianBlur(pred, (patch_size_small, patch_size_small), 0)
@@ -129,13 +137,13 @@ if __name__ == "__main__":
 
     # Create ensemble prompts and compute similarities
     ensemble = processor.prompt_emsmble(save=True)
-    processor.similarities(ensemble, save=args.sim_maps)
+    processor.similarities(ensemble, save=True)
 
     if args.pred:
         # Define output directories
         base_out = os.path.join(args.source, "pred_masks", args.template_name, args.model)
-        save_normal = os.path.join(base_out, "normal")
-        save_tumor = os.path.join(base_out, "tumor")
+        save_normal = os.path.join(base_out, "normal_maps")
+        save_tumor = os.path.join(base_out, "tumor_maps")
         save_binary = os.path.join(base_out, "prediction")
 
         for wsi_name in tqdm(sorted(os.listdir(args.data)), desc="[INFO] Processing slides", unit="slide"):

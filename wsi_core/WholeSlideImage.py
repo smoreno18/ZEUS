@@ -4,11 +4,19 @@ import multiprocessing as mp
 import os
 import time
 from xml.dom import minidom
-
 import cv2
 import matplotlib.pyplot as plt
 import numpy as np
-import openslide
+
+# The path can also be read from a config file, etc.
+OPENSLIDE_PATH = os.path.dirname(os.path.abspath(__file__))
+if hasattr(os, 'add_dll_directory'):
+    # Windows
+    with os.add_dll_directory(OPENSLIDE_PATH):
+        import openslide
+else:
+    import openslide
+
 import torch
 from tqdm import tqdm
 from PIL import Image
@@ -21,7 +29,7 @@ from wsi_core.wsi_utils import savePatchIter_bag_hdf5, initialize_hdf5_bag, coor
 from models.factory import extract_embedding
 from utils.utils import device
 
-Image.MAX_IMAGE_PIXELS = 933120000
+Image.MAX_IMAGE_PIXELS = None
 
 class WholeSlideImage(object):
     def __init__(self, path):

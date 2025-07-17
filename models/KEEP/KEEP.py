@@ -74,7 +74,7 @@ class KEEPModel(PreTrainedModel):
             "text_features": text_features
         }
 
-def return_KEEP(checkpoint_path, model_path = '/workspace/Projects/CPathPipeline/feature_extraction/models/KEEP/'):
+def return_KEEP(checkpoint_path, model_path = 'models/KEEP/'):
     AutoConfig.register("keep", KEEPConfig)
     AutoModel.register(KEEPConfig, KEEPModel)
 

@@ -54,7 +54,9 @@ def seg_and_patch(source, save_dir, mask_save_dir, stitch_save_dir, emb_save_dir
 				  vis_params = {'vis_level': -1, 'line_thickness': 250},
 				  patch_params = {'white_thresh': 5, 'black_thresh': 40, 'use_padding': True, 'contour_fn': 'four_pt'},
 				  patch_level = 0, use_default_params = False, seg = False, save_mask = True,
-				  stitch= False, patch = False, auto_skip=True, process_list = None, format = "jpg"):
+				  stitch= False, patch = False, auto_skip=True, process_list = None, format = "tif"):
+
+
 
 
 	# Read list of slides
@@ -64,6 +66,8 @@ def seg_and_patch(source, save_dir, mask_save_dir, stitch_save_dir, emb_save_dir
 			if fnmatch.fnmatch(file, f"*.{format}"):
 				slides.append(os.path.basename(file))
 				slides_fp.append(os.path.join(root, file))
+			else:
+				print("[ERROR]: WSI files do not match the expected format. Please check if you set the correct one.")
     
 	print(f"DEBUG: Found {len(slides)} slides BEFORE initialize_df.")
 	if len(slides) > 0:
