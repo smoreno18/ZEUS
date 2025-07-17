@@ -21,8 +21,8 @@ cd ZEUS
 ```
 Then create a conda env and install the dependencies:
 ```shell
-conda create -n ZEUS python=3.10 -y
-conda activate ZEUS
+conda create -n zeus python=3.10.12 -y
+conda activate zeus
 pip install --upgrade pip
 pip install -e .
 pip install -r requirements-txt
