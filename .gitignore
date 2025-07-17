@@ -5,6 +5,7 @@ __pycache__/
 *.bin
 *process_embeddings_copy.py
 *eval_segmentation_copy.py
+ZEUS.egg-info
 
 # Virtual environment
 venv/
