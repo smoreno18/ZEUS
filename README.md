@@ -37,7 +37,7 @@ pip install -r requirements-txt
     <strong>Then, place your WSIs inside <code>data/images</code>.</strong> If you have annotations, put them in <code>data/masks</code>.
   </li>
   <li>
-    <strong>Create your data-specific prompt template, which defines the textual descriptions for each class (e.g., tumor, normal tissue).</strong> You can find an example template for skin cancer (Cutaneous Spindle Cell neoplasms) detection <a href="inference/local_data/prompts/Templates/example_template.json">here</a>.
+    <strong>Create your data-specific prompt template, which defines the textual descriptions for each class (e.g., tumor, normal tissue).</strong> You can find an example for skin cancer (Cutaneous Spindle Cell neoplasms) detection <a href="inference/local_data/prompts/Templates/example_template.json">here</a>.
   </li>
   <li>
     <strong>Once your prompt template is ready and your data is set up, you can execute the full pipeline using the following command:</strong>
