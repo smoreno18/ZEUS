@@ -28,7 +28,7 @@ def load_model(model_name:str, checkpoint_path = None):
     elif model_name == "MUSK":
         from huggingface_hub import login
         from models.ELON.musk.modeling import return_MUSK
-        login("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")
+        login("<place_your_token_here>")  # Replace with your Hugging Face token
         model, transform = return_MUSK(checkpoint_path="musk_large_patch16_384")
         model.to(device= device, dtype=torch.float16)
         model.eval()
