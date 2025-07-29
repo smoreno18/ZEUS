@@ -59,8 +59,7 @@ class Processor:
             from models.ELON.musk import utils
             from timm.models import create_model
             from huggingface_hub import login
-            # login(<place_your_login_token>)
-            login("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")
+            login("<place_your_login_token_here>")
             self.model_MUSK = create_model("musk_large_patch16_384")
             utils.load_model_and_may_interpolate("hf_hub:xiangjx/musk", self.model_MUSK, 'model|module', '')
             self.tokenizer = XLMRobertaTokenizer("models/ELON/musk/models/tokenizer.spm")
