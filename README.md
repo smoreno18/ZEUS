@@ -8,7 +8,8 @@
     <li><strong>Prompt Ensembles</strong>: Craft rich textual descriptions for each class (e.g. tumor vs. healthy) without any manual annotations.</li>
     <li><strong>Vision Encoding</strong>: Extract high-level feature embeddings from WSI patches using a frozen, pre-trained vision encoder.</li>
     <li><strong>Multimodal Alignment</strong>: Compute cosine similarities between text and image embeddings to localize regions of interest.</li>
-    <li><strong>Mask Reconstruction</strong>: Stack per-class similarity maps and apply a pixel-wise argmax to produce the final segmentation mask.</li>
+    <li><strong>Mask Reconstruction</strong>: Generates per-class similarity maps to produce the final segmentation mask.</li>
+    
   </ol>
   By combining textual prompts and patch-level features in a single inference pass, ZEUS delivers explainable, annotation-free tumor delineation across primary and metastatic skin lesions.
 </p>
